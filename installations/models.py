@@ -1,6 +1,6 @@
 from django.db import models
 
-class installation(models.Model):
+class Installation(models.Model):
 
     customer_name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
@@ -9,9 +9,9 @@ class installation(models.Model):
     date_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['date_modified']
+        ordering = ['-date_modified']
 
-class status(models.Model):
+class Status(models.Model):
 
     INSTALLATION_REQUESTED = 'Installation Requested'
     INSTALLATION_IN_PROGRESS = 'Installation in Progress'
@@ -32,3 +32,7 @@ class status(models.Model):
 
     notes = models.CharField(max_length=255)
     date = models.DateTimeField(auto_now=True)
+    installation = models.ForeignKey(Installation, on_delete=models.CASCADE, related_name='status')
+
+    def __str__(self):
+        return self.status
