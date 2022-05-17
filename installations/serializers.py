@@ -6,14 +6,14 @@ class InstallationSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Installation
-        fields = ['id', 'customer_name', 'address', 'appointment_date', 'current_status' ]
+        fields = ['id', 'customer_name', 'address', 'appointment_date']
     
+    # 'current_status'
+    # current_status = serializers.SerializerMethodField()
 
-    current_status = serializers.SerializerMethodField()
 
-
-    def get_current_status(self, installation: Installation):
-        return Status.objects.filter(installation_id=installation.pk).order_by('-date')[0]
+    # def get_current_status(self, installation: Installation):
+    #     return Status.objects.filter(installation_id=installation.pk).order_by('-date')[0]
 
 
 class StatusSerializer(serializers.ModelSerializer):
