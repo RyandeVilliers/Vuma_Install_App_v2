@@ -5,7 +5,7 @@ from rest_framework.mixins import CreateModelMixin,\
                                     UpdateModelMixin
 
 from .models import Installation, Status
-from .serializers import InstallationSerializer, StatusSerializer
+from .serializers import CreateInstallationSerializer, InstallationSerializer, StatusSerializer
 
 
 class InstallationViewSet(CreateModelMixin, ListModelMixin,
@@ -13,6 +13,11 @@ class InstallationViewSet(CreateModelMixin, ListModelMixin,
 
     queryset = Installation.objects.prefetch_related('status').all()
     serializer_class = InstallationSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == 'POST':
+            return CreateInstallationSerializer
+        return InstallationSerializer
 
 
 class StatusViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
