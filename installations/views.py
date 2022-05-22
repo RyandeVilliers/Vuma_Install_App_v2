@@ -1,3 +1,4 @@
+import re
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin,\
                                     ListModelMixin, \
@@ -5,11 +6,15 @@ from rest_framework.mixins import CreateModelMixin,\
                                     UpdateModelMixin
 
 from .models import Installation, Status
-from .serializers import CreateInstallationSerializer, InstallationSerializer, StatusSerializer
+from .serializers import CreateInstallationSerializer, \
+                        InstallationSerializer, \
+                        UpdateStatusSerializer
 
 
 class InstallationViewSet(CreateModelMixin, ListModelMixin,
                             RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
+    http_method_names = ['get','post', 'patch', 'delete']
+
 
     queryset = Installation.objects.prefetch_related('status').all()
     serializer_class = InstallationSerializer
@@ -22,5 +27,14 @@ class InstallationViewSet(CreateModelMixin, ListModelMixin,
 
 class StatusViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, GenericViewSet):
     
-    queryset = Status.objects.all()
-    serializer_class = StatusSerializer
+    serializer_class = UpdateStatusSerializer
+
+    def get_queryset(self):
+        return Status.objects.filter(installation_id=self.kwargs['installation_pk'])
+
+    def get_serializer_context(self):
+        return {'installation_id': self.kwargs['installation_pk']}
+
+
+
+
