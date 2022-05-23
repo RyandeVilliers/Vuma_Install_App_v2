@@ -1,5 +1,4 @@
-from cgitb import lookup
-from re import I
+
 from rest_framework_nested import routers
 
 from . import views
@@ -7,7 +6,7 @@ from pprint import pprint
 
 router = routers.DefaultRouter()
 
-router.register('installation', views.InstallationViewSet)
+router.register('installation', views.InstallationViewSet, basename='installation')
 # router.register('status', views.StatusViewSet)
 pprint(router.urls)
 

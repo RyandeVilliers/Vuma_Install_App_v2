@@ -1,3 +1,4 @@
+from itertools import permutations
 from django.db import models
 
 class Installation(models.Model):
@@ -10,6 +11,9 @@ class Installation(models.Model):
 
     class Meta:
         ordering = ['-date_modified']
+        permissions = [
+            ('view_history', 'Can view history')
+        ]
 
 class Status(models.Model):
 
