@@ -23,6 +23,15 @@ class InstallationSerializer(serializers.ModelSerializer):
         serializer = StatusSerializer(current_status)
         return serializer.data
 
+
+class HistoryInstallationSerializer(serializers.ModelSerializer):
+
+    status = StatusSerializer(many=True)
+    
+    class Meta:
+        model = Installation
+        fields = ['id', 'date_created', 'customer_name', 'address', 'appointment_date', 'status']
+
 class CreateInstallationSerializer(serializers.ModelSerializer):
 
     status = StatusSerializer()

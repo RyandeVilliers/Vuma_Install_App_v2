@@ -1,15 +1,19 @@
+
 from rest_framework.filters import OrderingFilter, SearchFilter
 from rest_framework.viewsets import GenericViewSet
 from rest_framework.mixins import CreateModelMixin,\
                                     ListModelMixin, \
                                     RetrieveModelMixin,\
                                     UpdateModelMixin
+from rest_framework.response import Response
+from rest_framework.decorators import action
 
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Installation, Status
 from .serializers import CreateInstallationSerializer, \
                         InstallationSerializer, \
-                        UpdateStatusSerializer
+                        UpdateStatusSerializer, \
+                        HistoryInstallationSerializer
 
 
 class InstallationViewSet(CreateModelMixin, ListModelMixin,
@@ -22,6 +26,13 @@ class InstallationViewSet(CreateModelMixin, ListModelMixin,
     filterset_fields = ['status']
     search_fields = ['customer_name', 'address']
     ordering_fields = ['appointment_date']
+
+    @action(detail=True)
+    def history(self, request, pk):
+        installation = Installation.objects.get(pk=pk)
+        serializer = HistoryInstallationSerializer(installation)
+        return Response(serializer.data)
+
 
     # def get_queryset(self):
 

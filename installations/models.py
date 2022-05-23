@@ -15,6 +15,9 @@ class Installation(models.Model):
             ('view_history', 'Can view history')
         ]
 
+    def __str__(self) -> str:
+        return self.customer_name
+
 class Status(models.Model):
 
     INSTALLATION_REQUESTED = 'Installation Requested'
